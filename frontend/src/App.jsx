@@ -236,7 +236,7 @@ const AuthModal = ({ isOpen, onClose, onAdminLogin, onUserLogin }) => {
         const email = form.email.value;
         const password = form.password.value;
 
-        const res = await fetch('http://127.0.0.1:5000/api/auth/login', {
+        const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -258,7 +258,7 @@ const AuthModal = ({ isOpen, onClose, onAdminLogin, onUserLogin }) => {
         const email = form.email.value;
         const password = form.password.value;
 
-        const res = await fetch('http://127.0.0.1:5000/api/auth/register', {
+        const res = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ fullName, username, email, password })
@@ -2032,7 +2032,7 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch('http://localhost:5000/api/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -2055,7 +2055,7 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch('http://localhost:5000/api/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -2111,7 +2111,7 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
 
       setImageUploading(true); // Reuse as a general "saving" indicator
 
-      const res = await fetch(`http://localhost:5000/api/products/${editingProduct.id || ''}`, {
+      const res = await fetch(`/api/products/${editingProduct.id || ''}`, {
         method: editingProduct.id ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(normalizedBody)
@@ -2157,7 +2157,7 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       setProducts(products.filter(p => p.id !== id));
       try {
-        await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' });
+        await fetch(`/api/products/${id}`, { method: 'DELETE' });
       } catch (err) {
         console.error('Error deleting product:', err);
       }
@@ -2170,7 +2170,7 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
     const newStockValue = currentStock === 0 ? 50 : 0;
     setProducts(products.map(p => p.id === id ? { ...p, stock: newStockValue } : p));
     try {
-      await fetch(`http://localhost:5000/api/products/${id}/stock`, {
+      await fetch(`/api/products/${id}/stock`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inStock: newStockValue > 0 })
@@ -3216,7 +3216,7 @@ function App() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${currentUser.id}/like`, {
+      const res = await fetch(`/api/user/${currentUser.id}/like`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId: product.id || product._id })
@@ -3234,7 +3234,7 @@ function App() {
     if (!handleActionClick('Add to Cart', product)) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${currentUser.id}/cart`, {
+      const res = await fetch(`/api/user/${currentUser.id}/cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId: product.id || product._id, quantity })
@@ -3251,7 +3251,7 @@ function App() {
   const handleCartRemove = async (productId) => {
     if (!currentUser) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${currentUser.id}/cart/${productId}`, {
+      const res = await fetch(`/api/user/${currentUser.id}/cart/${productId}`, {
         method: 'DELETE'
       });
       const data = await res.json();
@@ -3269,7 +3269,7 @@ function App() {
       return handleCartRemove(productId);
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${currentUser.id}/cart/${productId}`, {
+      const res = await fetch(`/api/user/${currentUser.id}/cart/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity: newQty })
@@ -3305,7 +3305,7 @@ function App() {
     const syncUser = async () => {
       if (currentUser && currentUser.id) {
         try {
-          const res = await fetch(`http://localhost:5000/api/user/${currentUser.id}`);
+          const res = await fetch(`/api/user/${currentUser.id}`);
           const data = await res.json();
           if (data.success) {
             setCurrentUser(prev => ({ ...prev, ...data.user }));
@@ -3321,7 +3321,7 @@ function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products', { cache: 'no-store' });
+        const res = await fetch('/api/products', { cache: 'no-store' });
         const data = await res.json();
         const normalized = data.map(p => ({ ...p, id: p._id || p.id }));
         setProducts(normalized);
