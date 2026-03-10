@@ -1,0 +1,74 @@
+[
+  {
+    "mainCategory": "Bags & Travel Accessories",
+    "category": "Laptop Bags",
+    "id": 20,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Office & Desktop Accessories",
+    "category": "Pen Stand",
+    "id": 21,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Writing & Stationery",
+    "category": "Diaries",
+    "id": 22,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Tech & Electronic Accessories",
+    "category": "USB Pendrive",
+    "id": 23,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Drinkware & Kitchen Items",
+    "category": "Mugs",
+    "id": 24,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Home Decor & Decorative Items",
+    "category": "Photo Frame",
+    "id": 25,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Lighting Products",
+    "category": "Torch & Lamp",
+    "id": 26,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Keychains & Small Accessories",
+    "category": "Keychain",
+    "id": 27,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Bags & Travel Accessories",
+    "category": "Jute Bags",
+    "id": 28,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Bags & Travel Accessories",
+    "category": "Ladies Wallets",
+    "id": 29,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Bags & Travel Accessories",
+    "category": "Ladies Slings",
+    "id": 30,
+    "stock": 50
+  },
+  {
+    "mainCategory": "Bags & Travel Accessories",
+    "category": "Ladies Wallets",
+    "id": 31,
+    "stock": 50
+  }
+]
