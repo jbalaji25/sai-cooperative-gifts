@@ -321,6 +321,17 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     }
 });
 
+const path = require('path');
+
+// ─── Serve Frontend for Production ──────────────────────────────────────────
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
 });
