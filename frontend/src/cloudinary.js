@@ -6,7 +6,7 @@
 //    Set Signing Mode to "Unsigned" and save the preset name below
 
 const CLOUDINARY_CLOUD_NAME = "PASTE_YOUR_CLOUD_NAME_HERE"; // e.g. "dxyz123abc"
-const CLOUDINARY_UPLOAD_PRESET = "PASTE_YOUR_UPLOAD_PRESET_HERE"; // e.g. "elysian_gifts_preset"
+const CLOUDINARY_UPLOAD_PRESET = "PASTE_YOUR_UPLOAD_PRESET_HERE"; // e.g. "sri_sai_gifts_preset"
 
 /**
  * Upload an image file to Cloudinary and return the secure URL.
@@ -18,7 +18,7 @@ export async function uploadImageToCloudinary(file, onProgress) {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-    formData.append("folder", "elysian-gifts/products");
+    formData.append("folder", "sri-sai-gifts/products");
 
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();

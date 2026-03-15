@@ -139,8 +139,8 @@ const Navbar = ({ onSignInClick, onHomeClick, onProductsClick, currentUser, onLo
           style={{ cursor: 'pointer' }}
           className="brand-wrapper"
         >
-          <span className="brand-elysian">ELYSIAN</span>
-          <span className="brand-gifts">GIFTS</span>
+          <span className="brand-sri-sai">SRI SAI</span>
+          <span className="brand-gifts">gifts</span>
         </div>
 
         <div className="nav-links">
@@ -782,7 +782,7 @@ const ProductDetails = ({ product, onBack, onLikeClick, onCartClick, onBuyNowCli
           <ChevronLeft size={20} /> Back to {mainCat ? mainCat : 'Products'}
         </button>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '52px', alignItems: 'start' }}>
+        <div className="product-details-grid">
           {/* Left – Image and Gallery */}
           <div>
             <div style={{
@@ -1242,7 +1242,7 @@ const FeaturedProducts = ({ products, loading, onProductClick, onCategoryClick, 
 
           return (
             <div key={category} style={{ marginBottom: '64px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
+              <div className="section-header">
                 <div>
                   <span className="text-primary font-bold uppercase tracking-widest" style={{ fontSize: '0.875rem', marginBottom: '8px', display: 'block' }}>Collections</span>
                   <h2 style={{ fontSize: '2rem' }}>{category}</h2>
@@ -1250,6 +1250,7 @@ const FeaturedProducts = ({ products, loading, onProductClick, onCategoryClick, 
                 {hasMore && (
                   <button
                     onClick={() => onCategoryClick && onCategoryClick(category)}
+                    className="view-all-btn"
                     style={{
                       display: 'flex', alignItems: 'center', gap: '6px',
                       background: 'transparent', border: '2px solid #f59e0b',
@@ -1617,15 +1618,7 @@ const ContactPage = ({ onBack }) => {
       </div>
 
       {/* Info Cards */}
-      <div style={{
-        maxWidth: '1200px', margin: '-50px auto 0',
-        padding: '0 24px 80px',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '20px',
-        position: 'relative',
-        zIndex: 10
-      }}>
+      <div className="contact-header-cards">
         {[
           {
             icon: (
@@ -1692,8 +1685,8 @@ const ContactPage = ({ onBack }) => {
       </div>
 
       {/* Form + Map Section */}
-      <div style={{ background: '#f8fafc', padding: '60px 24px 80px' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+      <div className="contact-container" style={{ background: '#f8fafc' }}>
+        <div className="contact-grid">
           {/* LEFT – Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -1715,7 +1708,7 @@ const ContactPage = ({ onBack }) => {
               style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
             >
               {/* Row 1: Full Name + Email */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-row">
                 <div>
                   <label style={{ display: 'block', fontSize: '0.83rem', fontWeight: '600', color: '#374151', marginBottom: '6px' }}>
                     Full Name <span style={{ color: '#ef4444' }}>*</span>
@@ -1753,7 +1746,7 @@ const ContactPage = ({ onBack }) => {
               </div>
 
               {/* Row 2: Phone + Subject */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-row">
                 <div>
                   <label style={{ display: 'block', fontSize: '0.83rem', fontWeight: '600', color: '#374151', marginBottom: '6px' }}>Phone Number</label>
                   <input
@@ -1839,7 +1832,7 @@ const ContactPage = ({ onBack }) => {
             {/* Google Map Embed */}
             <div style={{ borderRadius: '16px', overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.1)', border: '1px solid #e2e8f0' }}>
               <iframe
-                title="Elysian Gifts Showroom – Pasumalai, Madurai"
+                title="SRI SAI gifts Showroom – Pasumalai, Madurai"
                 src="https://maps.google.com/maps?q=Thiruparankundram,+Madurai&t=&z=16&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="290"
@@ -1851,11 +1844,7 @@ const ContactPage = ({ onBack }) => {
             </div>
 
             {/* Dark Business Info Card */}
-            <div style={{
-              background: '#0f172a', borderRadius: '16px', padding: '24px',
-              display: 'flex', alignItems: 'center', gap: '16px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.18)'
-            }}>
+            <div className="info-card">
               <div style={{
                 width: 48, height: 48, borderRadius: '16px',
                 background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)',
@@ -1864,7 +1853,7 @@ const ContactPage = ({ onBack }) => {
                 <MapPin size={24} color="#f59e0b" />
               </div>
               <div>
-                <h3 style={{ color: 'white', fontWeight: '800', fontSize: '1.15rem', marginBottom: '8px' }}>Elysian Gifts Showroom</h3>
+                <h3 style={{ color: 'white', fontWeight: '800', fontSize: '1.15rem', marginBottom: '8px' }}>SRI SAI gifts Showroom</h3>
                 <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '4px' }}>49, GST Road, Pasumalai</p>
                 <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Madurai – 625 004, Tamil Nadu</p>
               </div>
@@ -1949,13 +1938,13 @@ const Newsletter = () => {
   );
 };
 
-const Footer = () => {
+const Footer = ({ onHomeClick, onProductsClick, onContactClick }) => {
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-grid">
           <div>
-            <div className="brand-elysian" style={{ fontSize: '1.5rem', marginBottom: '8px' }}>ELYSIAN <span style={{ fontWeight: 400, fontSize: '0.875rem' }}>GIFTS</span></div>
+            <div className="brand-sri-sai" style={{ fontSize: '1.5rem', marginBottom: '8px' }}>SRI SAI <span style={{ fontWeight: 400, fontSize: '0.875rem' }}>gifts</span></div>
             <p style={{ color: '#94a3b8', marginBottom: '32px' }}>
               Your boutique destination for luxury gifts and exquisite accessories. Crafted with passion, delivered with love.
             </p>
@@ -1969,10 +1958,10 @@ const Footer = () => {
           <div>
             <h4 style={{ fontSize: '1.25rem', marginBottom: '24px', color: '#f59e0b', fontWeight: '700' }}>Quick Links</h4>
             <ul className="footer-links">
-              <li className="footer-link-item"><a href="#" className="footer-link">Home</a></li>
-              <li className="footer-link-item"><a href="#" className="footer-link">Products</a></li>
-              <li className="footer-link-item"><a href="#" className="footer-link">About Us</a></li>
-              <li className="footer-link-item"><a href="#" className="footer-link">Contact</a></li>
+              <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onHomeClick(); window.scrollTo(0, 0); }}>Home</a></li>
+              <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onProductsClick(); window.scrollTo(0, 0); }}>Products</a></li>
+              <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onHomeClick(); window.scrollTo(0, 0); }}>About Us</a></li>
+              <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onContactClick(); window.scrollTo(0, 0); }}>Contact</a></li>
             </ul>
           </div>
 
@@ -1982,7 +1971,7 @@ const Footer = () => {
               <li className="footer-link-item"><a href="#" className="footer-link">Shipping Policy</a></li>
               <li className="footer-link-item"><a href="#" className="footer-link">Track Order</a></li>
               <li className="footer-link-item"><a href="#" className="footer-link">FAQs</a></li>
-              <li className="footer-link-item"><a href="#" className="footer-link">Contact Us</a></li>
+              <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onContactClick(); window.scrollTo(0, 0); }}>Contact Us</a></li>
             </ul>
           </div>
 
@@ -1999,13 +1988,13 @@ const Footer = () => {
               </li>
               <li className="footer-link-item" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                 <Mail size={20} color="#f59e0b" style={{ flexShrink: 0 }} />
-                elysiangifts@gmail.com
+                srisaigifts@gmail.com
               </li>
             </ul>
           </div>
         </div>
         <div style={{ borderTop: '1px solid #334155', paddingTop: '32px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', color: '#94a3b8', fontSize: '0.875rem' }}>
-          <p>© 2024 ELYSIAN GIFTS. All rights reserved.</p>
+          <p>© 2024 SRI SAI gifts. All rights reserved.</p>
           <div style={{ display: 'flex', gap: '24px' }}>
             <a href="#" className="footer-link">Privacy Policy</a>
             <a href="#" className="footer-link">Terms of Service</a>
@@ -2945,10 +2934,10 @@ const ProductsPage = ({ products, currentUser, onProductClick, onCartClick, onLi
         </div>
       </div>
 
-      <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '40px', alignItems: 'flex-start', padding: '60px 24px' }}>
+      <div className="products-layout">
 
         {/* LEFT SIDEBAR */}
-        <div style={{ width: '260px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="products-sidebar">
 
           {/* Categories Filter Card */}
           <div style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
@@ -2999,10 +2988,10 @@ const ProductsPage = ({ products, currentUser, onProductClick, onCartClick, onLi
         </div>
 
         {/* RIGHT MAIN AREA */}
-        <div style={{ flex: 1 }}>
+        <div className="products-main">
 
           {/* Header & Sort */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <div className="products-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <p style={{ color: '#64748b', fontSize: '0.95rem' }}>Showing {displayProducts.length} products</p>
             <select
               value={sortBy}
@@ -3021,7 +3010,7 @@ const ProductsPage = ({ products, currentUser, onProductClick, onCartClick, onLi
           </div>
 
           {/* Products Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+          <div className="products-grid">
             {displayProducts.map((product) => {
               const liked = currentUser?.likedProducts?.some(l => {
                 const lid = (typeof l === 'string' ? l : (l?._id || l?.id))?.toString();
@@ -3300,6 +3289,24 @@ function App() {
     setIsProductsPageActive(false);
   };
 
+  const goToProducts = () => {
+    setSelectedProductView(null);
+    setSelectedCategory(null);
+    setIsWishlistPageActive(false);
+    setIsCartPageActive(false);
+    setIsContactPageActive(false);
+    setIsProductsPageActive(true);
+  };
+
+  const goToContact = () => {
+    setSelectedProductView(null);
+    setSelectedCategory(null);
+    setIsWishlistPageActive(false);
+    setIsCartPageActive(false);
+    setIsProductsPageActive(false);
+    setIsContactPageActive(true);
+  };
+
   // Sync user data on load if logged in
   useEffect(() => {
     const syncUser = async () => {
@@ -3363,16 +3370,8 @@ function App() {
         onSignInClick={() => setIsAuthModalOpen(true)}
         onAccountClick={() => setIsAccountModalOpen(true)}
         onHomeClick={goHome}
-        onProductsClick={() => {
-          setSelectedProductView(null); setSelectedCategory(null);
-          setIsWishlistPageActive(false); setIsCartPageActive(false);
-          setIsContactPageActive(false); setIsProductsPageActive(true);
-        }}
-        onContactClick={() => {
-          setSelectedProductView(null); setSelectedCategory(null);
-          setIsWishlistPageActive(false); setIsCartPageActive(false);
-          setIsProductsPageActive(false); setIsContactPageActive(true);
-        }}
+        onProductsClick={goToProducts}
+        onContactClick={goToContact}
         onWishlistClick={() => {
           if (!currentUser) { setIsAuthModalOpen(true); return; }
           setSelectedProductView(null); setSelectedCategory(null);
@@ -3484,7 +3483,11 @@ function App() {
         </>
       )}
 
-      <Footer />
+      <Footer
+        onHomeClick={goHome}
+        onProductsClick={goToProducts}
+        onContactClick={goToContact}
+      />
 
       <AuthModal
         isOpen={isAuthModalOpen}

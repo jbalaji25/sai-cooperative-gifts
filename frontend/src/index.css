@@ -170,7 +170,7 @@ h6 {
   z-index: 10;
 }
 
-.brand-elysian {
+.brand-sri-sai {
   font-size: 2rem;
   font-weight: 800;
   color: var(--accent);
@@ -786,6 +786,50 @@ h6 {
   margin-bottom: 20px;
 }
 
+@media (min-width: 768px) {
+  .newsletter-form {
+    flex-direction: row;
+    padding: 8px;
+    border-radius: 60px;
+  }
+}
+
+/* Category Section Headers responsive */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.view-all-btn {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .view-all-btn {
+    width: auto;
+    padding: 6px 14px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Newsletter is handled in header section media query if needed, 
+   but original code had it here. Let's fix the syntax. */
 .newsletter-form {
   display: flex;
   flex-direction: column;
@@ -800,6 +844,149 @@ h6 {
 @media (min-width: 768px) {
   .newsletter-form {
     flex-direction: row;
+  }
+}
+
+/* Products Page Layout */
+.products-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  padding: 60px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.products-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.products-main {
+  flex: 1;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .products-layout {
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 32px;
+  }
+
+  .products-sidebar {
+    width: 100%;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .products-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+}
+
+.product-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 52px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .product-details-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Contact Page Layout */
+.contact-container {
+  padding: 60px 24px 80px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.contact-header-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1160px;
+  margin: 0 auto 80px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .contact-grid {
+    gap: 32px;
+  }
+}
+
+@media (max-width: 900px) {
+  .contact-header-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-container {
+    padding: 40px 16px 60px;
+  }
+}
+
+.info-card {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 480px) {
+  .info-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 }
 
