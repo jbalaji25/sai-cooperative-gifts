@@ -2900,9 +2900,10 @@ const ProductsPage = ({ products, currentUser, onProductClick, onCartClick, onLi
   const filteredProducts = products.filter(p => {
     // category filter
     if (selectedCategory !== "All") {
-      const matchMainCat = p.mainCategory === selectedCategory;
+      const normalizedSelected = selectedCategory.toLowerCase().trim();
+      const matchMainCat = p.mainCategory?.toLowerCase().trim() === normalizedSelected;
       const computedMainCat = p.category ? getMainCategoryForSub(p.category) : '';
-      if (!matchMainCat && computedMainCat !== selectedCategory) return false;
+      if (!matchMainCat && computedMainCat.toLowerCase().trim() !== normalizedSelected) return false;
     }
     // price filter
     if (p.price > priceMax) return false;
@@ -3107,73 +3108,73 @@ function App() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(() => {
     try {
-      const cached = localStorage.getItem('elysian_current_user');
+      const cached = sessionStorage.getItem('elysian_current_user');
       return cached ? JSON.parse(cached) : null;
     } catch { return null; }
   });
   const [selectedProductView, setSelectedProductView] = useState(() => {
     try {
-      const cached = localStorage.getItem('elysian_selected_product');
+      const cached = sessionStorage.getItem('elysian_selected_product');
       return cached ? JSON.parse(cached) : null;
     } catch { return null; }
   });
   const [selectedCategory, setSelectedCategory] = useState(() => {
-    return localStorage.getItem('elysian_selected_category') || null;
+    return sessionStorage.getItem('elysian_selected_category') || null;
   });
   const [isWishlistPageActive, setIsWishlistPageActive] = useState(() => {
-    return localStorage.getItem('elysian_wishlist_active') === 'true';
+    return sessionStorage.getItem('elysian_wishlist_active') === 'true';
   });
   const [isCartPageActive, setIsCartPageActive] = useState(() => {
-    return localStorage.getItem('elysian_cart_active') === 'true';
+    return sessionStorage.getItem('elysian_cart_active') === 'true';
   });
   const [isContactPageActive, setIsContactPageActive] = useState(() => {
-    return localStorage.getItem('elysian_contact_active') === 'true';
+    return sessionStorage.getItem('elysian_contact_active') === 'true';
   });
   const [isProductsPageActive, setIsProductsPageActive] = useState(() => {
-    return localStorage.getItem('elysian_products_active') === 'true';
+    return sessionStorage.getItem('elysian_products_active') === 'true';
   });
 
   // Effect to persist view state
   useEffect(() => {
     if (selectedProductView) {
-      localStorage.setItem('elysian_selected_product', JSON.stringify(selectedProductView));
+      sessionStorage.setItem('elysian_selected_product', JSON.stringify(selectedProductView));
     } else {
-      localStorage.removeItem('elysian_selected_product');
+      sessionStorage.removeItem('elysian_selected_product');
     }
   }, [selectedProductView]);
 
   useEffect(() => {
     if (selectedCategory) {
-      localStorage.setItem('elysian_selected_category', selectedCategory);
+      sessionStorage.setItem('elysian_selected_category', selectedCategory);
     } else {
-      localStorage.removeItem('elysian_selected_category');
+      sessionStorage.removeItem('elysian_selected_category');
     }
   }, [selectedCategory]);
 
   useEffect(() => {
-    localStorage.setItem('elysian_wishlist_active', isWishlistPageActive);
+    sessionStorage.setItem('elysian_wishlist_active', isWishlistPageActive);
   }, [isWishlistPageActive]);
 
   useEffect(() => {
-    localStorage.setItem('elysian_cart_active', isCartPageActive);
+    sessionStorage.setItem('elysian_cart_active', isCartPageActive);
   }, [isCartPageActive]);
 
   useEffect(() => {
-    localStorage.setItem('elysian_contact_active', isContactPageActive);
+    sessionStorage.setItem('elysian_contact_active', isContactPageActive);
   }, [isContactPageActive]);
 
   useEffect(() => {
-    localStorage.setItem('elysian_products_active', isProductsPageActive);
+    sessionStorage.setItem('elysian_products_active', isProductsPageActive);
   }, [isProductsPageActive]);
 
   const [products, setProducts] = useState(() => {
-    const cached = localStorage.getItem('elysian_products_cache');
+    const cached = sessionStorage.getItem('elysian_products_cache');
     return cached ? JSON.parse(cached) : [];
   });
 
   useEffect(() => {
     if (products.length > 0) {
-      localStorage.setItem('elysian_products_cache', JSON.stringify(products));
+      sessionStorage.setItem('elysian_products_cache', JSON.stringify(products));
       if (selectedProductView) {
         const matching = products.find(p => (p.id || p._id) === (selectedProductView.id || selectedProductView._id));
         if (matching && JSON.stringify(matching) !== JSON.stringify(selectedProductView)) {
@@ -3185,16 +3186,11 @@ function App() {
 
   const [loading, setLoading] = useState(products.length === 0);
 
-  // Removed admin persistence to ensure login is required on each visit as requested
-  // useEffect(() => {
-  //   localStorage.setItem('elysian_admin_logged_in', isAdminLoggedIn);
-  // }, [isAdminLoggedIn]);
-
   useEffect(() => {
     if (currentUser) {
-      localStorage.setItem('elysian_current_user', JSON.stringify(currentUser));
+      sessionStorage.setItem('elysian_current_user', JSON.stringify(currentUser));
     } else {
-      localStorage.removeItem('elysian_current_user');
+      sessionStorage.removeItem('elysian_current_user');
     }
   }, [currentUser]);
 
@@ -3332,7 +3328,7 @@ function App() {
         const data = await res.json();
         const normalized = data.map(p => ({ ...p, id: p._id || p.id }));
         setProducts(normalized);
-        localStorage.setItem('elysian_products_cache', JSON.stringify(normalized));
+        sessionStorage.setItem('elysian_products_cache', JSON.stringify(normalized));
       } catch (err) {
         console.error('Error fetching products:', err);
       } finally {
@@ -3349,10 +3345,10 @@ function App() {
         setProducts={setProducts}
         onLogout={() => {
           setIsAdminLoggedIn(false);
-          localStorage.removeItem('elysian_admin_logged_in');
+          sessionStorage.removeItem('elysian_admin_logged_in');
           // Also clear view state on logout if desired
-          localStorage.removeItem('elysian_selected_product');
-          localStorage.removeItem('elysian_selected_category');
+          sessionStorage.removeItem('elysian_selected_product');
+          sessionStorage.removeItem('elysian_selected_category');
         }}
       />
     );
@@ -3364,7 +3360,7 @@ function App() {
         currentUser={currentUser}
         onLogout={() => {
           setCurrentUser(null);
-          localStorage.removeItem('elysian_current_user');
+          sessionStorage.removeItem('elysian_current_user');
           goHome();
         }}
         onSignInClick={() => setIsAuthModalOpen(true)}
