@@ -1,0 +1,13 @@
+{
+  "name": "giftshop-root",
+  "version": "1.0.0",
+  "description": "Root package for deploying giftshop on Render",
+  "scripts": {
+    "install": "cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
