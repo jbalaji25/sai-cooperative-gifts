@@ -1152,7 +1152,7 @@ const ProductCard = ({ product, index, onClick, onLikeClick, onCartClick }) => {
         </div>
 
         <button
-          style={{ width: '100%', borderRadius: '8px', padding: '14px', background: '#f59e0b', color: 'white', border: 'none', fontWeight: '600', fontSize: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', opacity: inStock ? 1 : 0.5, cursor: inStock ? 'pointer' : 'not-allowed', transition: 'background-color 0.2s' }}
+          style={{ width: '100%', borderRadius: '8px', padding: '14px', background: '#f59e0b', color: 'white', border: 'none', fontWeight: '600', fontSize: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', opacity: inStock ? 1 : 0.5, cursor: inStock ? 'pointer' : 'not-allowed', transition: 'background-color 0.2s', marginBottom: '12px' }}
           onMouseOver={(e) => inStock && (e.currentTarget.style.backgroundColor = '#d97706')}
           onMouseOut={(e) => inStock && (e.currentTarget.style.backgroundColor = '#f59e0b')}
           disabled={!inStock}
@@ -1168,6 +1168,21 @@ const ProductCard = ({ product, index, onClick, onLikeClick, onCartClick }) => {
           ) : (
             'Out of Stock'
           )}
+        </button>
+        <button
+          style={{ width: '100%', borderRadius: '8px', padding: '14px', background: '#25D366', color: 'white', border: 'none', fontWeight: '600', fontSize: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'background-color 0.2s' }}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#128C7E')}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#25D366')}
+          onClick={(e) => {
+            e.stopPropagation();
+            const message = `*Product Enquiry* 🎁\n\n*Name:* ${product.name}\n*Price:* ₹${product.price}\n*Image Link:* ${product.image || 'N/A'}\n\nHi! I'm interested in this product. Can you provide more details?`;
+            window.open(`https://wa.me/919999999999?text=${encodeURIComponent(message)}`, '_blank'); 
+          }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12.01 2.01a10.003 10.003 0 0 0-8.52 15.28L2 22l4.87-1.46A9.957 9.957 0 0 0 12.01 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm.01 18.25c-1.63 0-3.19-.43-4.57-1.25l-3.26.98.98-3.21C4.4 15.42 4.02 13.78 4.02 12A8.01 8.01 0 0 1 12.02 4c4.41 0 8 3.59 8 8s-3.59 8-8 8zm4.33-5.59c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12-.16.24-.61.77-.75.93-.14.16-.28.18-.52.06a6.52 6.52 0 0 1-1.92-1.19c-.58-.51-1.02-1.15-1.14-1.39-.12-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.23-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.47-.39-.41-.54-.42H8.72c-.16 0-.41.06-.62.3-.21.24-.81.79-.81 1.93 0 1.14.83 2.24.94 2.4.11.16 1.63 2.49 3.96 3.5.55.24 1.05.39 1.48.5.55.15 1.06.13 1.46.08.45-.06 1.4-.57 1.6-1.13.2-.56.2-.104.14-.114-.06-.02-.22-.06-.46-.18z" />
+          </svg>
+          WhatsApp Enquiry
         </button>
       </div>
     </motion.div>
@@ -2093,8 +2108,8 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
         features: Array.isArray(editingProduct.features) ? editingProduct.features : []
       };
 
-      if (!normalizedBody.name || (!normalizedBody.category && !normalizedBody.mainCategory)) {
-        alert('Product name and at least one category (Main or Item) are required.');
+      if (!normalizedBody.name || !normalizedBody.mainCategory || !normalizedBody.category) {
+        alert('Product name, Main Category, and Sub Category are all required fields.');
         return;
       }
 
@@ -2678,7 +2693,7 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: (editingProduct.mainCategory || getMainCategoryForSub(editingProduct.category)) === 'Gift Sets' ? '1fr 1fr' : '1fr 1fr 1fr', gap: '16px', marginBottom: '20px' }}>
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Category</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Main Category <span style={{ color: '#ef4444' }}>*</span></label>
                         <select
                           value={editingProduct.mainCategory || getMainCategoryForSub(editingProduct.category) || ''}
                           onChange={(e) => {
@@ -2694,7 +2709,7 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
                         </select>
                       </div>
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Item Category</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Sub Category <span style={{ color: '#ef4444' }}>*</span></label>
                         <select
                           value={editingProduct.category || ''}
                           onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
@@ -2702,9 +2717,20 @@ const AdminDashboard = ({ onLogout, products, setProducts }) => {
                           style={{ width: '100%', padding: '10px 16px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', color: '#0f172a', fontSize: '0.875rem', boxSizing: 'border-box', backgroundColor: (editingProduct.mainCategory || getMainCategoryForSub(editingProduct.category)) ? 'white' : '#f8fafc', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 16px center', backgroundSize: '16px' }}
                         >
                           <option value="">Select Item</option>
-                          {(categoryStructure[editingProduct.mainCategory || getMainCategoryForSub(editingProduct.category)] || []).map(item => (
-                            <option key={item} value={item}>{item}</option>
-                          ))}
+                          {(() => {
+                            const mainName = editingProduct.mainCategory || getMainCategoryForSub(editingProduct.category);
+                            if (!mainName) return null;
+                            const configured = categoryStructure[mainName] || [];
+                            const normalizedMain = mainName.toLowerCase().trim();
+                            const productsInCat = products.filter(p => {
+                                const m = (p.mainCategory || '').toLowerCase().trim();
+                                const c = p.category ? getMainCategoryForSub(p.category).toLowerCase().trim() : '';
+                                return m === normalizedMain || c === normalizedMain;
+                            });
+                            const dynamic = productsInCat.map(p => p.category ? p.category.trim() : `Other ${mainName}`);
+                            const allOptions = [...new Set([...configured, ...dynamic])].filter(Boolean);
+                            return allOptions.map(item => <option key={item} value={item}>{item}</option>);
+                          })()}
                         </select>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '100%', paddingTop: '28px' }}>
@@ -2901,9 +2927,12 @@ const ProductsPage = ({ products, currentUser, onProductClick, onCartClick, onLi
     // category filter
     if (selectedCategory !== "All") {
       const normalizedSelected = selectedCategory.toLowerCase().trim();
-      const matchMainCat = p.mainCategory?.toLowerCase().trim() === normalizedSelected;
+      const matchMainCat = (p.mainCategory || '').toLowerCase().trim() === normalizedSelected;
       const computedMainCat = p.category ? getMainCategoryForSub(p.category) : '';
-      if (!matchMainCat && computedMainCat.toLowerCase().trim() !== normalizedSelected) return false;
+      const matchComputedMainCat = computedMainCat.toLowerCase().trim() === normalizedSelected;
+      const effectiveSubCat = p.category ? p.category.trim() : `Other ${p.mainCategory ? p.mainCategory.trim() : computedMainCat.trim()}`;
+      const matchSubCat = effectiveSubCat.toLowerCase().trim() === normalizedSelected;
+      if (!matchMainCat && !matchComputedMainCat && !matchSubCat) return false;
     }
     // price filter
     if (p.price > priceMax) return false;
@@ -2946,24 +2975,68 @@ const ProductsPage = ({ products, currentUser, onProductClick, onCartClick, onLi
               <Filter size={18} /> Categories
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {categories.map((cat, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSelectedCategory(cat)}
-                  style={{
-                    textAlign: 'left', padding: '12px 16px', borderRadius: '10px',
-                    background: selectedCategory === cat ? '#f59e0b' : 'transparent',
-                    color: selectedCategory === cat ? 'white' : '#64748b',
-                    border: 'none', cursor: 'pointer', fontSize: '0.9rem', fontWeight: selectedCategory === cat ? '600' : '500',
-                    transition: 'all 0.2s',
-                    boxShadow: selectedCategory === cat ? '0 4px 12px rgba(245,158,11,0.3)' : 'none'
-                  }}
-                  onMouseOver={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = '#f59e0b'; }}
-                  onMouseOut={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = '#64748b'; }}
-                >
-                  {cat}
-                </button>
-              ))}
+              {categories.map((cat, i) => {
+                const isMainCat = cat !== "All";
+                let subCats = [];
+                if (isMainCat) {
+                  const normalizedCat = cat.toLowerCase().trim();
+                  const productsInThisMain = products.filter(p => {
+                    const mCat = (p.mainCategory || '').toLowerCase().trim();
+                    const cCat = p.category ? getMainCategoryForSub(p.category).toLowerCase().trim() : '';
+                    return mCat === normalizedCat || cCat === normalizedCat;
+                  });
+                  subCats = [...new Set(productsInThisMain.map(p => p.category ? p.category.trim() : `Other ${cat}`))].filter(Boolean);
+                }
+                const isActiveMain = selectedCategory === cat || (subCats && subCats.includes(selectedCategory));
+                
+                // Hide main categories that have 0 products (optional, but requested for subcategories)
+                // We'll focus just on hiding the empty subcategories as requested.
+                
+                return (
+                  <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <button
+                      onClick={() => setSelectedCategory(cat)}
+                      style={{
+                        textAlign: 'left', padding: '12px 16px', borderRadius: '10px',
+                        background: selectedCategory === cat ? '#f59e0b' : 'transparent',
+                        color: selectedCategory === cat ? 'white' : '#64748b',
+                        border: 'none', cursor: 'pointer', fontSize: '0.9rem', fontWeight: selectedCategory === cat ? '600' : '500',
+                        transition: 'all 0.2s',
+                        boxShadow: selectedCategory === cat ? '0 4px 12px rgba(245,158,11,0.3)' : 'none',
+                        width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                      }}
+                      onMouseOver={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = '#f59e0b'; }}
+                      onMouseOut={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = '#64748b'; }}
+                    >
+                      <span>{cat}</span>
+                      {subCats && subCats.length > 0 && (
+                        <ChevronDown size={14} style={{ transform: isActiveMain ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+                      )}
+                    </button>
+                    {isActiveMain && subCats && subCats.length > 0 && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '16px', marginTop: '4px' }}>
+                        {subCats.map((sub, j) => (
+                          <button
+                            key={j}
+                            onClick={() => setSelectedCategory(sub)}
+                            style={{
+                              textAlign: 'left', padding: '8px 12px', borderRadius: '8px',
+                              background: selectedCategory === sub ? '#fef3c7' : 'transparent',
+                              color: selectedCategory === sub ? '#d97706' : '#64748b',
+                              border: 'none', cursor: 'pointer', fontSize: '0.85rem', fontWeight: selectedCategory === sub ? '600' : '400',
+                              transition: 'all 0.2s', width: '100%'
+                            }}
+                            onMouseOver={(e) => { if (selectedCategory !== sub) e.currentTarget.style.color = '#d97706'; }}
+                            onMouseOut={(e) => { if (selectedCategory !== sub) e.currentTarget.style.color = '#64748b'; }}
+                          >
+                            {sub}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -3011,89 +3084,135 @@ const ProductsPage = ({ products, currentUser, onProductClick, onCartClick, onLi
           </div>
 
           {/* Products Grid */}
-          <div className="products-grid">
-            {displayProducts.map((product) => {
-              const liked = currentUser?.likedProducts?.some(l => {
-                const lid = (typeof l === 'string' ? l : (l?._id || l?.id))?.toString();
-                return lid === (product.id || product._id)?.toString();
-              });
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+            {(() => {
+              const renderProductCard = (product) => {
+                const liked = currentUser?.likedProducts?.some(l => {
+                  const lid = (typeof l === 'string' ? l : (l?._id || l?.id))?.toString();
+                  return lid === (product.id || product._id)?.toString();
+                });
 
-              // Example Tag parsing
-              const tags = [];
-              if (product.category) tags.push(product.category.split(' ')[0]);
-              if (product.material) tags.push(product.material);
-              if (tags.length === 0) tags.push("Gift", "Premium");
+                const tags = [];
+                if (product.category) tags.push(product.category.split(' ')[0]);
+                if (product.material) tags.push(product.material);
+                if (tags.length === 0) tags.push("Gift", "Premium");
 
-              // Mock discount 
-              const discount = product.comparePrice && product.comparePrice > product.price
-                ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
-                : null;
+                const discount = product.comparePrice && product.comparePrice > product.price
+                  ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
+                  : null;
 
-              return (
-                <div key={product.id || product._id} style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column' }}>
-
-                  {/* Image Area */}
-                  <div
-                    onClick={() => onProductClick(product)}
-                    style={{ position: 'relative', height: '240px', background: '#f8fafc', padding: '16px', cursor: 'pointer' }}
-                  >
-                    {discount && (
-                      <span style={{ position: 'absolute', top: '16px', left: '16px', background: '#ef4444', color: 'white', padding: '4px 10px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '800', zIndex: 2 }}>
-                        {discount}% OFF
-                      </span>
-                    )}
-                    <button
-                      onClick={(e) => { e.stopPropagation(); onLikeClick(product); }}
-                      style={{ position: 'absolute', top: '16px', right: '16px', background: 'white', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', zIndex: 2 }}
+                return (
+                  <div key={product.id || product._id} style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column' }}>
+                    <div
+                      onClick={() => onProductClick(product)}
+                      style={{ position: 'relative', height: '240px', background: '#f8fafc', padding: '16px', cursor: 'pointer' }}
                     >
-                      <Heart size={18} color={liked ? "#ef4444" : "#94a3b8"} fill={liked ? "#ef4444" : "none"} />
-                    </button>
-                    <img
-                      src={optimizeCloudinaryUrl(product.image, 400, 'auto:low')}
-                      alt={product.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
-                    />
-                  </div>
-
-                  {/* Info Area */}
-                  <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-                      <Star size={14} color="#f59e0b" fill="#f59e0b" />
-                      <span style={{ color: '#0f172a', fontWeight: '700', fontSize: '0.85rem' }}>{product.ratings || 4.8}</span>
-                      <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>({Math.floor(Math.random() * 100 + 20)} reviews)</span>
-                    </div>
-
-                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#0f172a', marginBottom: '16px', lineHeight: 1.4 }}>{product.name}</h4>
-
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '24px' }}>
-                      {tags.slice(0, 2).map((t, idx) => (
-                        <span key={idx} style={{ padding: '4px 10px', background: '#f1f5f9', color: '#64748b', fontSize: '0.75rem', borderRadius: '6px' }}>{t}</span>
-                      ))}
-                    </div>
-
-                    <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-                      <div>
-                        <p style={{ fontSize: '1.4rem', fontWeight: '900', color: '#0f172a', margin: '0 0 2px' }}>₹{product.price}</p>
-                        {discount && <p style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through', margin: 0 }}>₹{product.comparePrice}</p>}
-                      </div>
-                      <motion.button
-                        onClick={() => onCartClick(product)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        style={{
-                          width: '44px', height: '44px', borderRadius: '50%', background: '#f59e0b', color: 'white',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer',
-                          boxShadow: '0 4px 12px rgba(245,158,11,0.3)'
-                        }}
+                      {discount && (
+                        <span style={{ position: 'absolute', top: '16px', left: '16px', background: '#ef4444', color: 'white', padding: '4px 10px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '800', zIndex: 2 }}>
+                          {discount}% OFF
+                        </span>
+                      )}
+                      <button
+                        onClick={(e) => { e.stopPropagation(); onLikeClick(product); }}
+                        style={{ position: 'absolute', top: '16px', right: '16px', background: 'white', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', zIndex: 2 }}
                       >
-                        <ShoppingCart size={20} />
-                      </motion.button>
+                        <Heart size={18} color={liked ? "#ef4444" : "#94a3b8"} fill={liked ? "#ef4444" : "none"} />
+                      </button>
+                      <img
+                        src={optimizeCloudinaryUrl(product.image, 400, 'auto:low')}
+                        alt={product.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+                      />
+                    </div>
+
+                    <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+                        <Star size={14} color="#f59e0b" fill="#f59e0b" />
+                        <span style={{ color: '#0f172a', fontWeight: '700', fontSize: '0.85rem' }}>{product.ratings || 4.8}</span>
+                        <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>({Math.floor(Math.random() * 100 + 20)} reviews)</span>
+                      </div>
+
+                      <h4 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#0f172a', marginBottom: '16px', lineHeight: 1.4 }}>{product.name}</h4>
+
+                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '24px' }}>
+                        {tags.slice(0, 2).map((t, idx) => (
+                          <span key={idx} style={{ padding: '4px 10px', background: '#f1f5f9', color: '#64748b', fontSize: '0.75rem', borderRadius: '6px' }}>{t}</span>
+                        ))}
+                      </div>
+
+                      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+                          <div>
+                            <p style={{ fontSize: '1.4rem', fontWeight: '900', color: '#0f172a', margin: '0 0 2px' }}>₹{product.price}</p>
+                            {discount && <p style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through', margin: 0 }}>₹{product.comparePrice}</p>}
+                          </div>
+                        </div>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); onCartClick(product); }}
+                          style={{
+                            width: '100%', borderRadius: '8px', padding: '12px', background: '#f59e0b', color: 'white',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: 'none', cursor: 'pointer',
+                            fontWeight: '600', fontSize: '0.95rem', transition: 'background-color 0.2s'
+                          }}
+                          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#d97706')}
+                          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#f59e0b')}
+                        >
+                          <ShoppingCart size={18} /> Add to Cart
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const message = `*Product Enquiry* 🎁\n\n*Name:* ${product.name}\n*Price:* ₹${product.price}\n*Image Link:* ${product.image || 'N/A'}\n\nHi! I'm interested in this product. Can you provide more details?`;
+                            window.open(`https://wa.me/919999999999?text=${encodeURIComponent(message)}`, '_blank'); 
+                          }}
+                          style={{
+                            width: '100%', borderRadius: '8px', padding: '12px', background: '#25D366', color: 'white',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: 'none', cursor: 'pointer',
+                            fontWeight: '600', fontSize: '0.95rem', transition: 'background-color 0.2s'
+                          }}
+                          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#128C7E')}
+                          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#25D366')}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M12.01 2.01a10.003 10.003 0 0 0-8.52 15.28L2 22l4.87-1.46A9.957 9.957 0 0 0 12.01 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm.01 18.25c-1.63 0-3.19-.43-4.57-1.25l-3.26.98.98-3.21C4.4 15.42 4.02 13.78 4.02 12A8.01 8.01 0 0 1 12.02 4c4.41 0 8 3.59 8 8s-3.59 8-8 8zm4.33-5.59c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12-.16.24-.61.77-.75.93-.14.16-.28.18-.52.06a6.52 6.52 0 0 1-1.92-1.19c-.58-.51-1.02-1.15-1.14-1.39-.12-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.23-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.47-.39-.41-.54-.42H8.72c-.16 0-.41.06-.62.3-.21.24-.81.79-.81 1.93 0 1.14.83 2.24.94 2.4.11.16 1.63 2.49 3.96 3.5.55.24 1.05.39 1.48.5.55.15 1.06.13 1.46.08.45-.06 1.4-.57 1.6-1.13.2-.56.2-.104.14-.114-.06-.02-.22-.06-.46-.18z" />
+                          </svg>
+                          WhatsApp Enquiry
+                        </button>
+                      </div>
                     </div>
                   </div>
+                );
+              };
 
-                </div>
-              );
-            })}
+              // Group products by subcategory if a main category is selected
+              const isMainCategorySelected = Object.keys(categoryStructure).includes(selectedCategory);
+              
+              if (isMainCategorySelected && selectedCategory !== "All") {
+                const groupedProducts = {};
+                displayProducts.forEach(product => {
+                  const sub = product.category ? product.category.trim() : `Other ${selectedCategory}`;
+                  if (!groupedProducts[sub]) groupedProducts[sub] = [];
+                  groupedProducts[sub].push(product);
+                });
+
+                return Object.entries(groupedProducts).map(([subCat, prods]) => (
+                  <div key={subCat} style={{ marginBottom: '16px' }}>
+                    <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#0f172a', borderBottom: '2px solid #e2e8f0', paddingBottom: '12px', marginBottom: '24px', display: 'inline-block' }}>
+                      {subCat} <span style={{ color: '#94a3b8', fontSize: '1rem', fontWeight: '600', marginLeft: '8px' }}>({prods.length})</span>
+                    </h3>
+                    <div className="products-grid">
+                      {prods.map(renderProductCard)}
+                    </div>
+                  </div>
+                ));
+              } else {
+                return (
+                  <div className="products-grid">
+                    {displayProducts.map(renderProductCard)}
+                  </div>
+                );
+              }
+            })()}
           </div>
 
         </div>
