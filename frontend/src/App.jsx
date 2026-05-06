@@ -112,7 +112,7 @@ const optimizeCloudinaryUrl = (url, width = 800, quality = 'auto') => {
   return url.replace('/upload/', `/upload/w_${width},q_${quality},f_auto,c_limit/`);
 };
 
-const Navbar = ({ onSignInClick, onHomeClick, onProductsClick, currentUser, onLogout, onAccountClick, onWishlistClick, onCartClick, onContactClick }) => {
+const Navbar = ({ onSignInClick, onHomeClick, onProductsClick, currentUser, onLogout, onAccountClick, onWishlistClick, onCartClick, onContactClick, onAboutClick, onSearchClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -146,13 +146,13 @@ const Navbar = ({ onSignInClick, onHomeClick, onProductsClick, currentUser, onLo
         <div className="nav-links">
           <a href="#home" className="nav-link" onClick={onHomeClick}>Home</a>
           <a href="#products" className="nav-link" onClick={(e) => { e.preventDefault(); onProductsClick && onProductsClick(); }}>Products</a>
-          <a href="#about" className="nav-link">About</a>
+          <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); onAboutClick && onAboutClick(); }}>About</a>
           <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); onContactClick && onContactClick(); }}>Contact</a>
         </div>
 
         <div className="nav-actions">
           <div className="desktop-actions">
-            <Search className="action-icon" size={20} />
+            <Search className="action-icon" size={20} onClick={onSearchClick} style={{ cursor: 'pointer' }} />
             <div onClick={onWishlistClick} style={{ position: 'relative', cursor: 'pointer' }}>
               <Heart className="action-icon" size={20} style={{ color: likedCount > 0 ? '#ef4444' : 'white' }} />
               {likedCount > 0 && <span className="cart-badge" style={{ background: '#ef4444' }}>{likedCount}</span>}
@@ -189,11 +189,11 @@ const Navbar = ({ onSignInClick, onHomeClick, onProductsClick, currentUser, onLo
         <div className="mobile-nav-links">
           <a href="#home" className="nav-link" onClick={() => { onHomeClick(); setIsMenuOpen(false); }}>Home</a>
           <a href="#products" className="nav-link" onClick={(e) => { e.preventDefault(); onProductsClick && onProductsClick(); setIsMenuOpen(false); }}>Products</a>
-          <a href="#about" className="nav-link" onClick={() => setIsMenuOpen(false)}>About</a>
+          <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); onAboutClick && onAboutClick(); setIsMenuOpen(false); }}>About</a>
           <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); onContactClick && onContactClick(); setIsMenuOpen(false); }}>Contact</a>
           <div className="mobile-menu-actions">
             <div style={{ display: 'flex', gap: '24px', marginBottom: '24px' }}>
-              <Search className="action-icon" size={24} />
+              <Search className="action-icon" size={24} onClick={() => { onSearchClick(); setIsMenuOpen(false); }} />
               <div onClick={() => { onWishlistClick(); setIsMenuOpen(false); }} style={{ position: 'relative' }}>
                 <Heart className="action-icon" size={24} style={{ color: likedCount > 0 ? '#ef4444' : 'white' }} />
                 {likedCount > 0 && <span className="cart-badge" style={{ background: '#ef4444' }}>{likedCount}</span>}
@@ -1587,6 +1587,177 @@ const CategoryPage = ({ category, products, loading, onProductClick, onBack, onL
   );
 };
 
+const AboutPage = ({ onBack }) => {
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, []);
+
+  const stats = [
+    { icon: <Users size={32} />, value: '10,000+', label: 'Happy Clients' },
+    { icon: <Award size={32} />, value: '15+', label: 'Years Experience' },
+    { icon: <Box size={32} />, value: '500+', label: 'Premium Products' },
+    { icon: <Zap size={32} />, value: '24h', label: 'Fast Delivery' }
+  ];
+
+  return (
+    <div style={{ minHeight: '100vh', backgroundColor: '#fff', fontFamily: "'Outfit', sans-serif" }}>
+      {/* Hero Section */}
+      <div style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f172a 100%)',
+        padding: '160px 24px 100px',
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <div style={{ position: 'absolute', top: '10%', left: '5%', width: '400px', height: '400px', background: 'rgba(245,158,11,0.05)', borderRadius: '50%', filter: 'blur(100px)' }} />
+        <div style={{ position: 'absolute', bottom: '5%', right: '5%', width: '350px', height: '350px', background: 'rgba(59,130,246,0.05)', borderRadius: '50%', filter: 'blur(100px)' }} />
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          style={{ position: 'relative', zIndex: 1 }}
+        >
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            borderRadius: '999px', padding: '8px 24px',
+            marginBottom: '32px', color: '#f59e0b', fontSize: '0.85rem',
+            fontWeight: '700', letterSpacing: '2px', textTransform: 'uppercase'
+          }}>
+            <Sparkles size={16} /> Our Legacy of Excellence
+          </div>
+
+          <h1 style={{ fontSize: 'clamp(2.5rem, 7vw, 4.5rem)', fontWeight: '900', color: 'white', lineHeight: 1.1, marginBottom: '24px' }}>
+            Redefining the Art of <br />
+            <span style={{ color: '#f59e0b' }}>Corporate Gifting</span>
+          </h1>
+
+          <p style={{ color: '#94a3b8', fontSize: '1.2rem', maxWidth: '650px', margin: '0 auto', lineHeight: 1.8 }}>
+            Since 2008, Sri Sai Gifts has been the trusted partner for premium corporate merchandise, blending tradition with modern innovation to create lasting impressions.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="container" style={{ marginTop: '-60px', position: 'relative', zIndex: 10, padding: '0 24px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '24px',
+          background: 'white',
+          padding: '40px',
+          borderRadius: '24px',
+          boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
+          border: '1px solid #f1f5f9'
+        }}>
+          {stats.map((stat, i) => (
+            <div key={i} style={{ textAlign: 'center' }}>
+              <div style={{ color: '#f59e0b', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>{stat.icon}</div>
+              <h3 style={{ fontSize: '2rem', fontWeight: '800', color: '#0f172a', marginBottom: '4px' }}>{stat.value}</h3>
+              <p style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Story Section */}
+      <section className="section-padding">
+        <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '80px', alignItems: 'center' }}>
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span style={{ color: '#f59e0b', fontWeight: '800', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '16px' }}>Our Journey</span>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#0f172a', marginBottom: '24px', lineHeight: 1.2 }}>Crafting Moments That Matter</h2>
+            <div style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <p>
+                What started as a small family-owned business in Madurai has grown into one of the region's most prominent suppliers of premium corporate gifts and promotional merchandise.
+              </p>
+              <p>
+                At Sri Sai Gifts, we believe that a gift is more than just an item—it's a gesture of appreciation, a symbol of partnership, and a bridge between brands and people. Our curated collections are handpicked to reflect the quality and values of your organization.
+              </p>
+              <div style={{ display: 'flex', gap: '16px', marginTop: '12px' }}>
+                <button onClick={onBack} className="hero-btn-gold" style={{ padding: '12px 28px', fontSize: '0.95rem' }}>Back to Shop</button>
+                <button style={{ background: '#f1f5f9', color: '#0f172a', border: 'none', padding: '12px 28px', borderRadius: '12px', fontWeight: '700', cursor: 'pointer' }}>Our Values</button>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            style={{ position: 'relative' }}
+          >
+            <div style={{
+              borderRadius: '32px',
+              overflow: 'hidden',
+              boxShadow: '0 30px 60px -12px rgba(0,0,0,0.2)',
+              aspectRatio: '4/5',
+              background: '#f8fafc'
+            }}>
+              <img
+                src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=800&auto=format&fit=crop"
+                alt="Premium Gifts"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
+            {/* Floating Element */}
+            <div style={{
+              position: 'absolute',
+              bottom: '-30px',
+              right: '-30px',
+              background: 'white',
+              padding: '24px',
+              borderRadius: '20px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+              maxWidth: '200px'
+            }}>
+              <div style={{ display: 'flex', gap: '4px', color: '#f59e0b', marginBottom: '8px' }}>
+                <Star size={16} fill="#f59e0b" />
+                <Star size={16} fill="#f59e0b" />
+                <Star size={16} fill="#f59e0b" />
+                <Star size={16} fill="#f59e0b" />
+                <Star size={16} fill="#f59e0b" />
+              </div>
+              <p style={{ fontSize: '0.85rem', fontWeight: '700', color: '#0f172a', marginBottom: '4px' }}>Top Rated Provider</p>
+              <p style={{ fontSize: '0.75rem', color: '#64748b' }}>Consistently rated 5/5 by our corporate partners.</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Values Grid */}
+      <section style={{ backgroundColor: '#f8fafc', padding: '100px 24px' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#0f172a' }}>Why Partner With Us?</h2>
+            <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '16px' }}>Quality, Reliability, and Elegance in every box.</p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
+            {[
+              { title: 'Quality Assurance', desc: 'Every product undergoes rigorous quality checks to ensure it meets our premium standards.', icon: <Shield size={24} /> },
+              { title: 'Custom Branding', desc: 'State-of-the-art engraving and printing to reflect your brand identity perfectly.', icon: <PenLine size={24} /> },
+              { title: 'Bulk Capacity', desc: 'Equipped to handle orders from small boutique gifts to thousands of units.', icon: <Package size={24} /> },
+              { title: 'Timely Delivery', desc: 'We understand deadlines. Your gifts reach their destination exactly when promised.', icon: <Clock size={24} /> }
+            ].map((v, i) => (
+              <div key={i} style={{ background: 'white', padding: '32px', borderRadius: '24px', border: '1px solid #f1f5f9' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#fff9ed', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f59e0b', marginBottom: '20px' }}>
+                  {v.icon}
+                </div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0f172a', marginBottom: '12px' }}>{v.title}</h3>
+                <p style={{ color: '#64748b', lineHeight: 1.6 }}>{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 const ContactPage = ({ onBack }) => {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, []);
 
@@ -1926,6 +2097,78 @@ const ContactPage = ({ onBack }) => {
   );
 };
 
+const SearchOverlay = ({ isOpen, onClose, searchQuery, setSearchQuery, products, onProductClick }) => {
+  if (!isOpen) return null;
+
+  const filtered = products.filter(p => 
+    p.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    p.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.mainCategory?.toLowerCase().includes(searchQuery.toLowerCase())
+  ).slice(0, 6);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      style={{
+        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+        background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)',
+        zIndex: 2000, padding: '40px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center'
+      }}
+    >
+      <button 
+        onClick={onClose}
+        style={{ position: 'absolute', top: '40px', right: '40px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '48px', height: '48px', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+      >
+        <X size={24} />
+      </button>
+
+      <div style={{ width: '100%', maxWidth: '800px', marginTop: '60px' }}>
+        <div style={{ position: 'relative', marginBottom: '40px' }}>
+          <Search size={32} color="#f59e0b" style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)' }} />
+          <input 
+            autoFocus
+            type="text"
+            placeholder="Search for premium gifts..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              width: '100%', background: 'rgba(255,255,255,0.05)', border: '2px solid rgba(245,158,11,0.3)',
+              borderRadius: '20px', padding: '24px 24px 24px 72px', fontSize: '1.5rem', color: 'white',
+              outline: 'none', transition: 'border-color 0.3s'
+            }}
+            onFocus={e => e.target.style.borderColor = '#f59e0b'}
+            onBlur={e => e.target.style.borderColor = 'rgba(245,158,11,0.3)'}
+          />
+        </div>
+
+        {searchQuery && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
+            {filtered.map(p => (
+              <motion.div 
+                key={p.id}
+                whileHover={{ y: -5 }}
+                onClick={() => { onProductClick(p); onClose(); }}
+                style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '16px', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                <img src={p.image} alt="" style={{ width: '100%', height: '140px', objectFit: 'contain', marginBottom: '12px', borderRadius: '8px' }} />
+                <h4 style={{ color: 'white', fontSize: '0.9rem', marginBottom: '4px', fontWeight: '700' }}>{p.name}</h4>
+                <p style={{ color: '#f59e0b', fontSize: '1rem', fontWeight: '800' }}>₹{p.price}</p>
+              </motion.div>
+            ))}
+            {filtered.length === 0 && (
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                No products found for "{searchQuery}"
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
 const Newsletter = () => {
   return (
     <section className="newsletter-section">
@@ -1953,7 +2196,7 @@ const Newsletter = () => {
   );
 };
 
-const Footer = ({ onHomeClick, onProductsClick, onContactClick }) => {
+const Footer = ({ onHomeClick, onProductsClick, onContactClick, onAboutClick }) => {
   return (
     <footer className="footer">
       <div className="container">
@@ -1975,7 +2218,7 @@ const Footer = ({ onHomeClick, onProductsClick, onContactClick }) => {
             <ul className="footer-links">
               <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onHomeClick(); window.scrollTo(0, 0); }}>Home</a></li>
               <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onProductsClick(); window.scrollTo(0, 0); }}>Products</a></li>
-              <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onHomeClick(); window.scrollTo(0, 0); }}>About Us</a></li>
+              <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onAboutClick(); window.scrollTo(0, 0); }}>About Us</a></li>
               <li className="footer-link-item"><a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onContactClick(); window.scrollTo(0, 0); }}>Contact</a></li>
             </ul>
           </div>
@@ -3252,6 +3495,11 @@ function App() {
   const [isProductsPageActive, setIsProductsPageActive] = useState(() => {
     return sessionStorage.getItem('elysian_products_active') === 'true';
   });
+  const [isAboutPageActive, setIsAboutPageActive] = useState(() => {
+    return sessionStorage.getItem('elysian_about_active') === 'true';
+  });
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Effect to persist view state
   useEffect(() => {
@@ -3285,6 +3533,10 @@ function App() {
   useEffect(() => {
     sessionStorage.setItem('elysian_products_active', isProductsPageActive);
   }, [isProductsPageActive]);
+
+  useEffect(() => {
+    sessionStorage.setItem('elysian_about_active', isAboutPageActive);
+  }, [isAboutPageActive]);
 
   const [products, setProducts] = useState(() => {
     const cached = sessionStorage.getItem('elysian_products_cache');
@@ -3402,6 +3654,7 @@ function App() {
     setIsCartPageActive(false);
     setIsContactPageActive(false);
     setIsProductsPageActive(false);
+    setIsAboutPageActive(false);
   };
 
   const goToProducts = () => {
@@ -3419,7 +3672,18 @@ function App() {
     setIsWishlistPageActive(false);
     setIsCartPageActive(false);
     setIsProductsPageActive(false);
+    setIsAboutPageActive(false);
     setIsContactPageActive(true);
+  };
+
+  const goAbout = () => {
+    setSelectedProductView(null);
+    setSelectedCategory(null);
+    setIsWishlistPageActive(false);
+    setIsCartPageActive(false);
+    setIsProductsPageActive(false);
+    setIsContactPageActive(false);
+    setIsAboutPageActive(true);
   };
 
   // Sync user data on load if logged in
@@ -3487,17 +3751,19 @@ function App() {
         onHomeClick={goHome}
         onProductsClick={goToProducts}
         onContactClick={goToContact}
+        onAboutClick={goAbout}
+        onSearchClick={() => setIsSearchOpen(true)}
         onWishlistClick={() => {
           if (!currentUser) { setIsAuthModalOpen(true); return; }
           setSelectedProductView(null); setSelectedCategory(null);
           setIsCartPageActive(false); setIsContactPageActive(false);
-          setIsProductsPageActive(false); setIsWishlistPageActive(true);
+          setIsProductsPageActive(false); setIsAboutPageActive(false); setIsWishlistPageActive(true);
         }}
         onCartClick={() => {
           if (!currentUser) { setIsAuthModalOpen(true); return; }
           setSelectedProductView(null); setSelectedCategory(null);
           setIsWishlistPageActive(false); setIsContactPageActive(false);
-          setIsProductsPageActive(false); setIsCartPageActive(true);
+          setIsProductsPageActive(false); setIsAboutPageActive(false); setIsCartPageActive(true);
         }}
       />
 
@@ -3515,6 +3781,8 @@ function App() {
           onCartClick={handleCartClick}
           onBuyNowClick={(p, q) => handleActionClick('Buy Now', p) && alert('Redirecting to checkout...')}
         />
+      ) : isAboutPageActive ? (
+        <AboutPage onBack={goHome} />
       ) : isContactPageActive ? (
         <ContactPage onBack={goHome} />
       ) : isCartPageActive ? (
@@ -3602,6 +3870,7 @@ function App() {
         onHomeClick={goHome}
         onProductsClick={goToProducts}
         onContactClick={goToContact}
+        onAboutClick={goAbout}
       />
 
       <AuthModal
@@ -3616,6 +3885,15 @@ function App() {
         onClose={() => setIsAccountModalOpen(false)}
         currentUser={currentUser}
         products={products}
+      />
+
+      <SearchOverlay 
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        products={products}
+        onProductClick={setSelectedProductView}
       />
 
       <motion.button
